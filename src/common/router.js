@@ -136,6 +136,9 @@ export const getRouterData = app => {
         import('../routes/Profile/AdvancedProfile')
       ),
     },
+    '/page/build': {
+      component: dynamicWrapper(app, [], () => import('../routes/Page/PageBuild')),
+    },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },

@@ -34,7 +34,7 @@ const menuData = [
       {
         name: '页面列表',
         path: 'basic-list',
-      }
+      },
     ],
   },
   {
@@ -50,6 +50,17 @@ const menuData = [
         name: '组件列表',
         path: 'advanced',
         authority: 'admin',
+      },
+    ],
+  },
+  {
+    name: '页面搭建',
+    icon: 'profile',
+    path: 'page',
+    children: [
+      {
+        name: '页面组件编辑',
+        path: 'build',
       },
     ],
   },
@@ -91,7 +102,7 @@ const menuData = [
         hideInMenu: true,
       },
     ],
-  }
+  },
 ];
 
 function formatter(data, parentPath = '/', parentAuthority) {
