@@ -1,19 +1,23 @@
 import React, { Component } from 'react';
 import { Table, Divider, Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import Styles from './PageList.less'
 
 const columns = [{
   title: 'id',
   dataIndex: 'id',
   key: 'id'
 }, {
+  title: '页面logo',
+  dataIndex: 'logo',
+  key: 'logo',
+  render: (text, record) => (
+    <img src={record.logo} className={Styles.logo} />
+  )
+}, {
   title: '名称',
   dataIndex: 'name',
   key: 'name'
-}, {
-  title: '中文名称',
-  dataIndex: 'chineseName',
-  key: 'chineseName',
 }, {
   title: '创建时间',
   dataIndex: 'creatTime',
@@ -27,19 +31,18 @@ const columns = [{
   dataIndex: 'updator',
   key: 'updator'
 }, {
-  title: '描述',
-  dataIndex: 'subscribe',
-  key: 'subscribe'
-}, {
   title: '操作',
   key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="javascript:;">查看</a>
-      <Divider type="vertical" />
-      <a href="javascript:;">删除</a>
-    </span>
-  ),
+  render: (text, record) => {
+    const link = `/page/build?pageId=${record.id}`
+    return (
+      <span>
+        <a href="javascript:;">查看</a>
+        <Divider type="vertical" />
+        <a href={link}>删除</a>
+      </span>
+    )
+  },
 }];
 
 let data = [];
@@ -48,7 +51,7 @@ for (let i = 0; i < 10; i++) {
     id: i,
     key: i,
     name: 'todo１',
-    chineseName: '待办１',
+    logo: 'http://oia85104s.bkt.clouddn.com/head-pic.jpeg',
     creatTime: '2018-05-12',
     creator: 'ylethe',
     type: '页头',

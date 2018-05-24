@@ -25,16 +25,16 @@ const menuData = [
   {
     name: '页面管理',
     icon: 'table',
-    path: 'list',
+    path: 'page',
     children: [
       {
         name: '添加页面',
-        path: 'table-list',
+        path: 'add',
       },
       {
         name: '页面列表',
-        path: 'basic-list',
-      },
+        path: 'list',
+      }
     ],
   },
   {
@@ -49,21 +49,6 @@ const menuData = [
       {
         name: '获取组件列表',
         path: 'list'
-      },
-    ],
-  },
-  {
-    name: '页面搭建',
-    icon: 'profile',
-    path: 'page',
-    children: [
-      {
-        name: '页面列表',
-        path: 'list'
-      },
-      {
-        name: '页面搭建',
-        path: 'build',
       },
     ],
   },
