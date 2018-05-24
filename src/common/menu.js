@@ -47,9 +47,8 @@ const menuData = [
         path: 'basic',
       },
       {
-        name: '组件列表',
-        path: 'advanced',
-        authority: 'admin',
+        name: '获取组件列表',
+        path: 'list'
       },
     ],
   },

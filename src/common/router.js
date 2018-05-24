@@ -132,9 +132,10 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/BasicProfile')),
     },
     '/profile/advanced': {
-      component: dynamicWrapper(app, ['profile'], () =>
-        import('../routes/Profile/AdvancedProfile')
-      ),
+      component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/AdvancedProfile')),
+    },
+    '/profile/list': {
+      component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/ComponentList')),
     },
     '/page/build': {
       component: dynamicWrapper(app, [], () => import('../routes/Page/PageBuild')),
