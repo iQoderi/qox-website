@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Styles from './PageBuild.less';
-import PropTypes from 'prop-types';
-import { Form, Icon, Input, Button, Switch, Tag, Divider } from 'antd';
+import { Form, Icon, Input, Button, Switch, Tag, Divider,　Modal } from 'antd';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const createForm = Form.create;
 const FormItem = Form.Item;
@@ -42,12 +42,15 @@ const schemaJSON = {
     },
   },
 };
+
 class PageBuild extends Component {
   constructor(props) {
     super(props);
     this.state = {
       schema: schemaJSON,
       formItems: [],
+      showComponentsForm: true,
+      visible: false
     };
   }
 
@@ -58,7 +61,7 @@ class PageBuild extends Component {
 
   switchChange = checked => {
     console.log(checked);
-  };
+  }
   // 获取配置项表单数据
   getSchemaForm = object => {
     const data = object.properties;
@@ -79,7 +82,7 @@ class PageBuild extends Component {
         }
       }
     }
-  };
+  }
   // 提交配置项
   handleSubmit = e => {
     e.preventDefault();
@@ -88,18 +91,37 @@ class PageBuild extends Component {
         console.log('Received values of form: ', values);
       }
     });
-  };
+  }
   // 添加组件
   addComponent = e => {
     e.preventDefault();
-    console.log('添加组件');
-  };
+    this.setState({
+      visible: true
+    });
+  }
+
+  handleOk = () => {
+    console.log('add');
+    this.setState({
+      visible: false
+    });
+  }
+
+  handleCancel = () => {
+    this.setState({
+      visible: false
+    });
+  }
+
+  publishPage = e => {
+    e.preventDefault();
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 6 },
-      wrapperCol: { span: 16 },
+      wrapperCol: { span: 10 },
     };
     const formItems = this.state.formItems.map(v => {
       if (v.type === 'boolean') {
@@ -116,17 +138,30 @@ class PageBuild extends Component {
         );
       }
     });
+    const getComponentForm = () => {
+      if (!this.state.showComponentsForm) {
+        return (<span></span>)
+      }
+      return (
+        <Form onSubmit={this.handleSubmit} layout="vertical">
+          {formItems}
+          <FormItem>
+            <Button type="primary" htmlType="submit">
+              保存
+            </Button>
+          </FormItem>
+        </Form>
+      )
+    }
+
+    const componentForm =  getComponentForm()
     return (
-      <div className={Styles.container}>
-        <section className={Styles.pages}>
-          <div className={Styles.content}>
-            {/* <p className={Styles.title}>预览区域</p> */}
+      <PageHeaderLayout title="页面搭建">
+        <div className={Styles.container}>
+          <section className={Styles.pages}>
             <div className={Styles.page}>
               <div className={Styles.nav} />
             </div>
-          </div>
-          <div className={Styles.content}>
-            {/* <p className={Styles.title}>编辑区域</p> */}
             <div className={Styles.page}>
               <div className={Styles.nav} />
               <div className={Styles.main}>
@@ -135,21 +170,44 @@ class PageBuild extends Component {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-        <section className={Styles.editor}>
-          <p className={Styles.title}>组件配置</p>
-          <Divider />
-          <Form onSubmit={this.handleSubmit} layout="vertical">
-            {formItems}
-            <FormItem>
-              <Button type="primary" htmlType="submit">
-                发布
-              </Button>
-            </FormItem>
-          </Form>
-        </section>
-      </div>
+          </section>
+
+          <section className={Styles.editor}>
+          　<p className={Styles.title}>页面配置</p>
+            <Divider />
+            <Form onSubmit={this.publishPage} layout="vertical">
+              <FormItem label="页面名称">
+                {getFieldDecorator('name')(<Input />)}
+              </FormItem>
+              <FormItem label='中文名称'>
+                {getFieldDecorator('chineseName')(<Input />)}
+              </FormItem>
+              <FormItem label='备注'>
+                {getFieldDecorator('comment')(<Input />)}
+              </FormItem>
+              <FormItem>
+                <Button type="primary" htmlType="submit">
+                  发布
+                </Button>
+              </FormItem>
+            </Form>
+            <Divider />
+
+            <p className={Styles.title}>组件配置</p>
+            <Divider />
+          </section>
+        </div>
+        <Modal
+          title="添加组件"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
+      </PageHeaderLayout>
     );
   }
 }

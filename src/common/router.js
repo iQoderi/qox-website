@@ -140,6 +140,9 @@ export const getRouterData = app => {
     '/page/build': {
       component: dynamicWrapper(app, [], () => import('../routes/Page/PageBuild')),
     },
+    '/page/list': {
+      component: dynamicWrapper(app, [], () => import('../routes/Page/PageList')),
+    },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },
@@ -159,6 +162,9 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['error'], () =>
         import('../routes/Exception/triggerException')
       ),
+    },
+    '/management/global-setting': {
+      component: dynamicWrapper(app, [], () => import('../routes/Management/GlobalSetting')),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
