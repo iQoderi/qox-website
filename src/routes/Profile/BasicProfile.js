@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Form, Select, Button, Input, Card, Badge, Table, Divider } from 'antd';
-import DescriptionList from 'components/DescriptionList';
+import { Form, Select, Button, Input, Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './BasicProfile.less';
 
-const { Description } = DescriptionList;
 const FormItem = Form.Item;
 const { Option } = Select;
-const InputGroup = Input.Group;
+const { TextArea } = Input;
 
 @Form.create()
 export default class BasicProfile extends Component {
@@ -22,14 +19,18 @@ export default class BasicProfile extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-  };
+  }
+
+  selectType = (val) => {
+    console.log(val);
+  }
 
   render() {
     const { form, submitting } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 16 },
+      labelCol: { span: 2 },
+      wrapperCol: { span: 10 },
     };
     return (
       <PageHeaderLayout title="组件信息">
@@ -51,10 +52,10 @@ export default class BasicProfile extends Component {
               {getFieldDecorator('icon')(<Input />)}
             </FormItem>
             <FormItem label="schema" {...formItemLayout}>
-              {getFieldDecorator('schema')(<Input />)}
+              {getFieldDecorator('schema')(<TextArea rows={4} />)}
             </FormItem>
             <FormItem label="描述" {...formItemLayout}>
-              {getFieldDecorator('subscribe')(<Input />)}
+              {getFieldDecorator('subscribe')(<TextArea rows={4} />)}
             </FormItem>
             <FormItem>
               <Button type="primary" htmlType="submit">
