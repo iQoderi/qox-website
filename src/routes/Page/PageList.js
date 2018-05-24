@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import { Table, Divider, Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import Styles from './ComponentList.less';
 
 const columns = [{
   title: 'id',
   dataIndex: 'id',
   key: 'id'
-}, {
-  title: '图标',
-  dataIndex: 'icon',
-  key: 'icon',
-render: (text, record) => (<img src={record.icon} className={Styles.icon}/>),
 }, {
   title: '名称',
   dataIndex: 'name',
@@ -20,10 +14,6 @@ render: (text, record) => (<img src={record.icon} className={Styles.icon}/>),
   title: '中文名称',
   dataIndex: 'chineseName',
   key: 'chineseName',
-}, {
-  title: '类型',
-  dataIndex: 'type',
-  key: 'type'
 }, {
   title: '创建时间',
   dataIndex: 'creatTime',
@@ -63,7 +53,6 @@ for (let i = 0; i < 10; i++) {
     creator: 'ylethe',
     type: '页头',
     updator: 'ylethe',
-    icon: 'http://oia85104s.bkt.clouddn.com/head-pic.jpeg',
     subscribe: '啦啦啦～'
   })
 };
@@ -86,7 +75,7 @@ export default class ComponentList extends Component {
 
   render () {
     return (
-      <PageHeaderLayout title="组件列表">
+      <PageHeaderLayout title="页面列表">
         <Card>
           <Table columns={columns} dataSource={data} onChange={this.handleTableChange}/>
         </Card>

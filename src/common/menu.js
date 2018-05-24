@@ -58,10 +58,25 @@ const menuData = [
     path: 'page',
     children: [
       {
-        name: '页面组件编辑',
+        name: '页面列表',
+        path: 'list'
+      },
+      {
+        name: '页面搭建',
         path: 'build',
       },
     ],
+  },
+  {
+    name: '全局管理',
+    icon: 'profile',
+    path: 'management',
+    children: [
+      {
+        name: '全局配置',
+        path: 'global-setting'
+      }
+    ]
   },
   {
     name: '结果页',
