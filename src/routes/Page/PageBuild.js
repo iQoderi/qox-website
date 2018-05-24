@@ -120,8 +120,8 @@ class PageBuild extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 10 },
+      labelCol: { span: 2 },
+      wrapperCol: { span: 4 },
     };
     const formItems = this.state.formItems.map(v => {
       if (v.type === 'boolean') {
@@ -173,28 +173,9 @@ class PageBuild extends Component {
           </section>
 
           <section className={Styles.editor}>
-          　<p className={Styles.title}>页面配置</p>
-            <Divider />
-            <Form onSubmit={this.publishPage} layout="vertical">
-              <FormItem label="页面名称">
-                {getFieldDecorator('name')(<Input />)}
-              </FormItem>
-              <FormItem label='中文名称'>
-                {getFieldDecorator('chineseName')(<Input />)}
-              </FormItem>
-              <FormItem label='备注'>
-                {getFieldDecorator('comment')(<Input />)}
-              </FormItem>
-              <FormItem>
-                <Button type="primary" htmlType="submit">
-                  发布
-                </Button>
-              </FormItem>
-            </Form>
-            <Divider />
-
             <p className={Styles.title}>组件配置</p>
             <Divider />
+            {componentForm}
           </section>
         </div>
         <Modal

@@ -143,6 +143,9 @@ export const getRouterData = app => {
     '/page/list': {
       component: dynamicWrapper(app, [], () => import('../routes/Page/PageList')),
     },
+    '/page/add': {
+      component: dynamicWrapper(app, [], () => import('../routes/Page/PageAdd')),
+    },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },
