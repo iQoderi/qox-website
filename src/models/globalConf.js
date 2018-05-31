@@ -19,13 +19,8 @@ export default {
       });
     },
     *save({payload}, {call, put}) {
-      const result = yield call(updateGlobalConf, payload); 
-
-      console.log(result);
-      // yield put({
-      //   type: 'get',
-      //   payload
-      // });
+      const result = yield call(updateGlobalConf, payload);
+      message.success('保存成功:-D');
     },
     *update({payload}, {call, put}) {
       yield put({

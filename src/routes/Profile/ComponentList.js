@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Divider, Card } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { Link } from 'dva/router';
+import { connect } from 'dva';
 import Styles from './ComponentList.less';
 
 const columns = [{
@@ -9,66 +11,41 @@ const columns = [{
   key: 'id'
 }, {
   title: '图标',
-  dataIndex: 'icon',
-  key: 'icon',
-render: (text, record) => (<img src={record.icon} className={Styles.icon}/>),
-}, {
-  title: '名称',
-  dataIndex: 'name',
-  key: 'name'
-}, {
+  dataIndex: 'imageUrl',
+  key: 'imageUrl',
+  render: (text, record) => (<img src={record.imageUrl} className={Styles.icon}/>),
+},{
   title: '中文名称',
-  dataIndex: 'chineseName',
-  key: 'chineseName',
-}, {
-  title: '类型',
-  dataIndex: 'type',
-  key: 'type'
-}, {
+  dataIndex: 'cname',
+  key: 'cname',
+},{
   title: '创建时间',
-  dataIndex: 'creatTime',
-  key: 'creatTime',
+  dataIndex: 'createAt',
+  key: 'createAt',
 }, {
   title: '创建人',
-  dataIndex: 'creator',
-  key: 'creator'
+  dataIndex: 'createBy',
+  key: 'createBy'
 }, {
   title: '更新人',
-  dataIndex: 'updator',
-  key: 'updator'
-}, {
-  title: '描述',
-  dataIndex: 'subscribe',
-  key: 'subscribe'
-}, {
+  dataIndex: 'updateBy',
+  key: 'updateBy'
+},{
   title: '操作',
   key: 'action',
   render: (text, record) => (
     <span>
-      <a href="javascript:;">查看</a>
+      <Link to={`/component/edit/?componentId=${record.id}`}>查看</Link>
       <Divider type="vertical" />
       <a href="javascript:;">删除</a>
     </span>
   ),
 }];
 
-let data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    id: i,
-    key: i,
-    name: 'todo１',
-    chineseName: '待办１',
-    creatTime: '2018-05-12',
-    creator: 'ylethe',
-    type: '页头',
-    updator: 'ylethe',
-    icon: 'http://oia85104s.bkt.clouddn.com/head-pic.jpeg',
-    subscribe: '啦啦啦～'
-  })
-};
-
-export default class ComponentList extends Component {
+@connect(({ component }) => ({
+  component,
+}))
+class ComponentList extends Component {
   state = {
     pagination: {
       pageSize: 10,
@@ -84,13 +61,30 @@ export default class ComponentList extends Component {
     });
   }
 
+  getComponents() {
+    const { component: { list, page } } = this.props;
+    this.props.dispatch({
+      type: 'component/list',
+      payload: page
+    });
+  };
+  componentDidMount() {
+    this.getComponents();
+  }
+  
   render () {
+    const { component: { list, page } } = this.props;
+
+    console.log(list[0]);
+
     return (
       <PageHeaderLayout title="组件列表">
         <Card>
-          <Table columns={columns} dataSource={data} onChange={this.handleTableChange}/>
+          <Table columns={columns} dataSource={list} onChange={this.handleTableChange}/>
         </Card>
       </PageHeaderLayout>
     )
   }
 }
+
+export default ComponentList;

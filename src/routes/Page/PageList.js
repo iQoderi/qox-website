@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Divider, Card } from 'antd';
+import { Link } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { connect } from 'dva';
 import Styles from './PageList.less'
 
 const columns = [{
@@ -37,7 +39,7 @@ const columns = [{
     const link = `/page/build?pageId=${record.id}`
     return (
       <span>
-        <a href="javascript:;">查看</a>
+        <Link to={link}>查看</Link>
         <Divider type="vertical" />
         <a href={link}>删除</a>
       </span>
@@ -45,22 +47,10 @@ const columns = [{
   },
 }];
 
-let data = [];
-for (let i = 0; i < 10; i++) {
-  data.push({
-    id: i,
-    key: i,
-    name: 'todo１',
-    logo: 'http://oia85104s.bkt.clouddn.com/head-pic.jpeg',
-    creatTime: '2018-05-12',
-    creator: 'ylethe',
-    type: '页头',
-    updator: 'ylethe',
-    subscribe: '啦啦啦～'
-  })
-};
-
-export default class ComponentList extends Component {
+@connect(({ page }) => ({
+  page,
+}))
+class PageList extends Component {
   state = {
     pagination: {
       pageSize: 10,
@@ -76,13 +66,29 @@ export default class ComponentList extends Component {
     });
   }
 
+  getPage() {
+    const { page: { list, page } } = this.props;
+
+    this.props.dispatch({
+      type: 'page/list',
+      payload: page
+    });
+  };
+  componentDidMount() {
+    this.getPage();
+  }
+
   render () {
+    const { page: { list, page } } = this.props;
+
     return (
       <PageHeaderLayout title="页面列表">
         <Card>
-          <Table columns={columns} dataSource={data} onChange={this.handleTableChange}/>
+          <Table columns={columns} dataSource={list} onChange={this.handleTableChange}/>
         </Card>
       </PageHeaderLayout>
     )
   }
 }
+
+export default PageList;

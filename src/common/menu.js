@@ -40,14 +40,14 @@ const menuData = [
   {
     name: '组件管理',
     icon: 'profile',
-    path: 'profile',
+    path: 'component',
     children: [
       {
         name: '添加组件',
-        path: 'basic',
+        path: 'add',
       },
       {
-        name: '获取组件列表',
+        name: '组件列表',
         path: 'list'
       },
     ],

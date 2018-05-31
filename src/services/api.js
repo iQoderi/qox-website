@@ -99,3 +99,58 @@ export async function updateGlobalConf(params) {
     body: params
   });
 }
+
+export async function getPageList(page, limit) {
+  const uri = `${API_PREFIX}/page/list?page=${page}&limit=${limit}`;
+
+  return request(uri);
+};
+
+
+export async function registerComponent(body) {
+  const uri = `${API_PREFIX}/component/create`;
+
+  return request(uri, {
+    method: 'POST',
+    body
+  });
+};
+
+export async function getComponentList(page, limit) {
+  const uri = `${API_PREFIX}/component/list?page=${page}&limit=${limit}`;
+
+  return request(uri);
+};
+
+export async function getComponent(componentId) {
+  const uri = `${API_PREFIX}/component/detail?componentId=${componentId}`;
+
+  return request(uri);
+};
+
+export async function updateComponent(componentId, body) {
+  const uri = `${API_PREFIX}/component/update?componentId=${componentId}`;
+
+  return request(uri, {
+    method: 'PUT',
+    body
+  });
+};
+
+
+export async function buildPage(pageId, components) {
+  const uri = `${API_PREFIX}/page/build?pageId=${pageId}`;
+
+  return request(uri, {
+    method: 'PUT',
+    body: {
+      components
+    }
+  });
+};
+
+export async function getPageModules(pageId) {
+  const uri = `${API_PREFIX}/page/modules?pageId=${pageId}`;
+
+  return request(uri);
+}

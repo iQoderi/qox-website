@@ -1,11 +1,17 @@
 import { message } from 'antd';
 import { routerRedux } from 'dva/router';
-import { registerPage } from '../services/api';
+import { registerPage, getPageList } from '../services/api';
 
 export default {
   namespace: 'page',
   state: {
-    pageId: ''
+    pageId: '',
+    list: [],
+    page: {
+      current: 0,
+      limit: 10,
+      total: 0
+    },
   },
   effects: {
     *add({ payload }, { call, put }) {
@@ -22,6 +28,16 @@ export default {
       message.success('创建页面成功');
       
       yield put(routerRedux.push(`/page/build?pageId=${pageId}`));
+    },
+    *list({ payload }, { call, put }){
+      const { current, limit = 10 } = payload;
+      const { data } = yield getPageList(current, limit);
+
+      yield put({
+        type: 'updatePageList',
+        payload: data
+      });
+      console.log(data);
     }
   },
   reducers: {
@@ -30,6 +46,13 @@ export default {
         ...state,
         pageId: action.payload.pageId
       }
+    },
+    updatePageList(state, { payload: { list, page } }) {
+      return {
+        ...state,
+        list,
+        page
+      };
     }
   }
 };
