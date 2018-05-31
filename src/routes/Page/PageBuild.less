@@ -4,6 +4,15 @@
   display: flex;
   align-items: flex-start;
   background: #fff;
+  position: relative;
+  .preview {
+    position: absolute;
+    top: -70px;
+    right: 20px;
+    border: 1px solid #1890ff;
+    padding: 5px;
+    border-radius: 3px;
+  }
   label {
     color: #666;
     font-size: 12px;
@@ -29,7 +38,7 @@
         height: 415px;
         .add {
           text-align: center;
-          border: 2px solid #1890ff;
+          border: 1.5px dashed #1890ff;
           height: 50px;
           line-height: 50px;
           .icon {
@@ -60,6 +69,17 @@
           background-color: rgba(0,0,0,0.5);
           width: 100%;
           text-align: center;
+        }
+        .option {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 15px;
+          width: 70px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          background: rgba(0,0,0,0.5);
         }
       }
       ::-webkit-scrollbar {

@@ -149,8 +149,8 @@ export async function buildPage(pageId, components) {
   });
 };
 
-export async function getPageModules(pageId) {
-  const uri = `${API_PREFIX}/page/modules?pageId=${pageId}`;
+export async function getPageComponents(pageId) {
+  const uri = `${API_PREFIX}/page/components?pageId=${pageId}`;
 
   return request(uri);
 }

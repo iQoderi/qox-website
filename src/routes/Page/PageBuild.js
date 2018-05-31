@@ -1,15 +1,75 @@
 import React, { Component } from 'react';
 import Styles from './PageBuild.less';
-import { Form, Icon, Input, Button, Switch, Tag, Divider,　Modal, Card } from 'antd';
+import { Form, Icon, Input, Button, Switch, Tag, Divider,　Modal, Card, message } from 'antd';
+import { Link } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { buildPage, getPageModules } from '../../services/api';
+import { buildPage, getPageComponents } from '../../services/api';
 import { connect } from 'dva';
+import { applyMiddleware } from 'redux';
 
 const { Meta } = Card;
 const createForm = Form.create;
 const FormItem = Form.Item;
 
 const REG_PAGEID = /pageId\=\d+/ig;
+
+const options = [
+  {
+    icon: 'delete',
+    title: '删除组件',
+    option(index) {
+      const { modules } = this.state;
+      const newModules = [...modules.slice(0, index), ...modules.slice(index + 1)]
+
+      this.setState({
+        modules: newModules
+      });
+    }
+  },
+  {
+    icon: 'up',
+    title: '上移',
+    option(index) {
+      const { modules } = this.state;
+      
+      if (index === 0) {
+        return;
+      }
+
+      const newModules = [...modules.slice(0, index - 1), modules[index], modules[index - 1], ...modules.slice(index + 1)];
+
+      this.setState({
+        modules: newModules
+      }, () => {
+        this.setState({
+          selectedModule: index - 1
+        });
+      });
+    }
+  },
+  {
+    icon: 'down',
+    title: '下移',
+    option(index) {
+      const { modules } = this.state;
+      const len = modules.length;
+
+      if (index === len - 1) {
+        return;
+      }
+
+      const newModules = [...modules.slice(0, index), modules[index + 1],  modules[index], ...modules.slice(index + 2)];      
+
+      this.setState({
+        modules: newModules,
+      }, () => {
+        this.setState({
+          selectedModule: index + 1
+        });
+      });
+    }
+  }
+];
 
 @connect(({ component }) => ({
   component,
@@ -49,15 +109,16 @@ class PageBuild extends Component {
 
   async getOriginModules() {
     const pageId = this.getPageId();
-    const { data: { modules } } = await getPageModules(pageId);
+    const { data: { modules } } = await getPageComponents(pageId);
 
-    modules.map((module) => {
-      return {
-        id: module.moduleId,
-        name: module.moduleName,
-        version: module.moduleVersion
-      };
-    });
+    console.log(modules);
+    // const mods = modules.map((module) => {
+    //   return {
+    //     id: module.moduleId,
+    //     name: module.moduleName,
+    //     version: module.moduleVersion
+    //   };
+    // });
 
     this.setState({
       modules
@@ -77,11 +138,6 @@ class PageBuild extends Component {
   // 提交配置项
   async handleSubmit(e){
     e.preventDefault();
-    // this.props.form.validateFields((err, values) => {
-    //   if (!err) {
-    //     console.log('Received values of form: ', values);
-    //   }
-    // });
     const { modules } = this.state;
 
     const pageId = this.getPageId();
@@ -95,7 +151,9 @@ class PageBuild extends Component {
 
     const result = await buildPage(pageId, _modules);
 
-    console.log(result);
+    message.success('保存成功');
+    
+    window.frames[0].postMessage('reload', '*');
   }
   // 添加组件
   addComponent = e => {
@@ -152,7 +210,6 @@ class PageBuild extends Component {
       wrapperCol: { span: 4 },
     };
     
-    console.log(v);
     if (v.type === 'boolean1') {
       return (
         <FormItem label={v.title} {...formItemLayout} key={v.name}>
@@ -182,7 +239,9 @@ class PageBuild extends Component {
       }
     }
 
-    const { properties ={} } = schema;
+    console.log('schema', schema);
+
+    const { properties ={} } = schema || {};
 
     const keys = Object.keys(properties);
 
@@ -228,7 +287,7 @@ class PageBuild extends Component {
       </Form>
     );
   }
-  
+
   render() {
     const { form: {getFieldDecorator}, component } = this.props;
     const { selectedIdx, modules, selectedModule } = this.state;
@@ -251,6 +310,9 @@ class PageBuild extends Component {
     return (
       <PageHeaderLayout title="页面搭建">
         <div className={Styles.container}>
+         <div className={Styles.preview}>
+          <a href={`http://127.0.0.1:7001/qox/index.html?pageId=${pageId}`} target="_blank">打开页面</a>
+         </div>
           <section className={Styles.pages}>
             <div className={Styles.page}>
               <div className={Styles.nav} />
@@ -277,6 +339,19 @@ class PageBuild extends Component {
                         onClick={()=>{this.handleSelectModule(index)}}
                       >
                         <span className={Styles.componentName}>{item.cname}</span>
+                        <div className={Styles.option}>
+                          {
+                            options.map((option) => {
+                              return <Icon type={option.icon} style={{
+                                color: '#fff',
+                                cursor: 'pointer'
+                              }} 
+                              title={option.title}
+                              onClick={option.option.bind(this, index)}
+                              />;
+                            })
+                          }
+                        </div>
                       </div>
                     );
                   })
