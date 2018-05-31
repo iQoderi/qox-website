@@ -1,33 +1,71 @@
 import React, { Component } from 'react';
-import { Card, Button, Input } from 'antd';
+import { Form, Card, Button, Input } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { connect } from 'dva';
 import Styles from './GlobalSetting.less';
 
 const { TextArea } = Input;
+const FormItem = Form.Item;
+
+@connect(({ globalConf }) => ({
+  globalConf,
+}))
+@Form.create()
 export default class globalSetting extends Component {
   constructor (props) {
     super(props);
-
-    this.handleChange = this.handleChange.bind(this);
   }
-  state = {
-    settingJson: ''
-  };
+
   submit = (e) => {
     e.preventDefault();
-    console.log(this.state.settingJson);
+    this.props.form.validateFields((err, value) => {
+      const { content } = value;
+      this.props.dispatch({
+        type: 'globalConf/save',
+        payload: {
+          id: 1,
+          content
+        }
+      });
+    });
   }
 
-  handleChange = (e) => {
-    this.setState({settingJson: e.target.value});
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'globalConf/fetch'
+    });
   }
 
   render () {
+    const { globalConf, form } = this.props;
+    const { getFieldDecorator } = form;
+
+    const formItemLayout = {
+      labelCol: { span: 2 },
+      wrapperCol: { span: 10 },
+    };
+
     return (
       <PageHeaderLayout title="全局配置">
         <Card>
-          <TextArea placeholder="请输入全局配置JSON" rows={14} value={this.state.settingJson} onChange={this.handleChange}/>
-          <Button className={ Styles.submit }　type="primary" onClick={this.submit}>保存</Button>
+          <Form onSubmit={this.submit} layout="vertical">
+            <FormItem label="配置" {...formItemLayout}>
+              {getFieldDecorator('content', {
+                  initialValue: globalConf.content
+                })(<TextArea style={{
+                  width: '500px',
+                  height: '200px'
+                }}
+              />)}
+            </FormItem>
+            <FormItem>
+              <Button type="primary" htmlType="submit">
+                保存
+              </Button>
+            </FormItem>
+          {/* <TextArea placeholder="请输入全局配置JSON" rows={14}  value={globalConf.content} /> */}
+          {/* <Button className={ Styles.submit }　type="primary" onClick={this.submit}>保存</Button> */}
+          </Form>
         </Card>
       </PageHeaderLayout>  
     )

@@ -77,3 +77,25 @@ export async function fakeRegister(params) {
 export async function queryNotices() {
   return request('/api/notices');
 }
+
+
+const API_PREFIX = 'http://127.0.0.1:7001';
+// page
+export async function registerPage(params) {
+  return request(`${API_PREFIX}/page/register`, {
+    method: 'POST',
+    body: params
+  });
+};
+
+// globalConf
+export async function fetchGlobalConf() {
+  return request(`${API_PREFIX}/global-conf/get`);
+};
+
+export async function updateGlobalConf(params) {
+  return request(`${API_PREFIX}/global-conf/update`, {
+    method: 'PUT',
+    body: params
+  });
+}

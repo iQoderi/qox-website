@@ -1,21 +1,37 @@
 import React, { Component } from 'react';
-import { Form, Button, Input, Card } from 'antd';
+import { Form, Button, Input, Card, Alert } from 'antd';
+import { connect } from 'dva';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const FormItem = Form.Item;
 
+@connect(({ page }) => ({
+  page,
+}))
 @Form.create()
 export default class PageAdd extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentDidMount() {
-    console.log('添加页面');
-  }
+
+  renderMessage = content => {
+    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />;
+  };
 
   handleSubmit = e => {
     e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+
+      this.props.dispatch({
+        type: 'page/add',
+        payload: values
+      });
+
+    });
   }
 
   render() {
@@ -37,7 +53,7 @@ export default class PageAdd extends Component {
             </FormItem>
             <FormItem>
               <Button type="primary" htmlType="submit">
-                添加
+                创建
               </Button>
             </FormItem>
           </Form>

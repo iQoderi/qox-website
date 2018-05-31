@@ -1,0 +1,9 @@
+{
+  "PI": ["rox-pi"],
+  "builtInList": ["rax"],
+  "interventionMap": {
+    "rax": "0.6.3",
+    "rax-text": "0.6.3",
+    "rax-view": "0.6.3"
+  }
+}
